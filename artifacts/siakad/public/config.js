@@ -1,5 +1,12 @@
 // ========================================================================
-// KONFIGURASI UTAMA SIAKAD MADRASAH BERBASIS DIGITAL
+// KONFIGURASI UTAMA SIAKAD MADRASAH
+// ========================================================================
+// Untuk hosting Supabase Cloud (Replit, Vercel, dll):
+//   window.__ENV_USE_MYSQL__ = false
+//
+// Untuk hosting MySQL/cPanel/Plesk/DirectAdmin:
+//   window.__ENV_USE_MYSQL__ = true
+//   window.__ENV_MYSQL_API_URL__ = "/api.php"
 // ========================================================================
 
 // Di Replit, gunakan Supabase Cloud (bukan MySQL/Plesk)

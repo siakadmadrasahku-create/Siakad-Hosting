@@ -1,0 +1,44 @@
+# Si@Kad Madrasah — Apache SPA Router
+# Pastikan mod_rewrite aktif di hosting Anda
+
+Options -MultiViews
+RewriteEngine On
+
+# Redirect HTTP ke HTTPS (aktifkan jika sudah ada SSL)
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Izinkan akses langsung ke file dan folder yang ada
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Izinkan akses ke api.php dan uploads
+RewriteRule ^api\.php$ - [L]
+RewriteRule ^uploads/(.*)$ uploads/$1 [L]
+
+# Semua route lain diarahkan ke index.html (SPA)
+RewriteRule ^ index.html [L]
+
+# Keamanan: block akses langsung ke file sensitif
+<FilesMatch "^(\.env|\.htpasswd|composer\.(json|lock)|package(-lock)?\.json)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Kompresi gzip untuk performa lebih baik
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/css application/javascript application/json image/svg+xml
+</IfModule>
+
+# Cache header untuk aset statis
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType application/json "access plus 0 seconds"
+</IfModule>
