@@ -1,0 +1,126 @@
+"use client";
+
+import React from 'react';
+import { useSiteSettings } from '@/contexts/SiteSettingsContext';
+import { BookOpen, GraduationCap, ShieldCheck, Star, Award } from 'lucide-react';
+
+interface DocumentCoverProps {
+  title: string;
+  subtitle?: string;
+  year?: string;
+  category?: string;
+  author?: string;
+  nip?: string;
+  nama_yayasan?: string;
+  nama_madrasah?: string;
+  logo_url?: string;
+  className?: string;
+}
+
+const DocumentCover = ({ 
+  title, subtitle, year, category, author, nip, 
+  nama_yayasan, nama_madrasah, logo_url,
+  className = "" 
+}: DocumentCoverProps) => {
+  const { settings } = useSiteSettings();
+  const identitas = settings.identitas_madrasah || {};
+  const general = settings.general || {};
+
+  const displayYayasan = nama_yayasan || identitas.nama_yayasan || 'YAYASAN PENDIDIKAN ISLAM';
+  const displayMadrasah = nama_madrasah || identitas.nama_madrasah || general.school_name || 'Si@Kad Madrasah';
+  const displayLogo = logo_url || identitas.logo_url;
+
+  return (
+    <div 
+      className={`bg-white relative overflow-hidden flex flex-col items-center justify-between border-[16px] border-emerald-600 ${className}`}
+      style={{ 
+        width: '210mm', 
+        height: '297mm', 
+        padding: '2cm', 
+        boxSizing: 'border-box',
+        pageBreakAfter: 'always',
+        pageBreakInside: 'avoid'
+      }}
+    >
+      {/* Background Patterns */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-50 rounded-full -translate-y-1/2 translate-x-1/2 opacity-50"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-50 rounded-full translate-y-1/2 -translate-x-1/2 opacity-50"></div>
+      
+      {/* Header Section */}
+      <div className="relative z-10 text-center space-y-4 w-full">
+        {displayLogo ? (
+          <img src={displayLogo} alt="Logo" className="h-28 w-auto mx-auto mb-4 object-contain drop-shadow-md" />
+        ) : (
+          <div className="w-20 h-20 bg-emerald-100 rounded-3xl flex items-center justify-center mx-auto mb-4">
+            <BookOpen className="w-10 h-10 text-emerald-600" />
+          </div>
+        )}
+        <h2 className="text-lg font-bold text-emerald-800 uppercase tracking-widest leading-tight">
+          {displayYayasan}
+        </h2>
+        <h1 className="text-2xl font-black text-gray-900 uppercase leading-tight">
+          {displayMadrasah}
+        </h1>
+        <div className="h-1 w-20 bg-yellow-400 mx-auto rounded-full"></div>
+      </div>
+
+      {/* Main Title Section */}
+      <div className="relative z-10 text-center flex-1 flex flex-col justify-center py-8 w-full">
+        {category && (
+          <div className="mb-6">
+            <span className="inline-block px-6 py-2 bg-emerald-600 text-white text-xs font-black uppercase tracking-[0.3em] rounded-full shadow-lg">
+              {category}
+            </span>
+          </div>
+        )}
+        <h1 className="text-4xl font-black text-gray-900 leading-[1.1] tracking-tighter mb-4 uppercase">
+          {title}
+        </h1>
+        {subtitle && (
+          <p className="text-xl font-serif italic text-emerald-700 max-w-lg mx-auto leading-relaxed">
+            "{subtitle}"
+          </p>
+        )}
+      </div>
+
+      {/* Footer Info */}
+      <div className="relative z-10 w-full text-center space-y-6">
+        <div className="grid grid-cols-3 gap-4 max-w-xs mx-auto">
+          <div className="flex flex-col items-center gap-1">
+            <GraduationCap className="w-5 h-5 text-emerald-600" />
+            <span className="text-[8px] font-bold text-gray-400 uppercase">Akademik</span>
+          </div>
+          <div className="flex flex-col items-center gap-1">
+            <ShieldCheck className="w-5 h-5 text-emerald-600" />
+            <span className="text-[8px] font-bold text-gray-400 uppercase">Terverifikasi</span>
+          </div>
+          <div className="flex flex-col items-center gap-1">
+            <Award className="w-5 h-5 text-emerald-600" />
+            <span className="text-[8px] font-bold text-gray-400 uppercase">Unggulan</span>
+          </div>
+        </div>
+
+        <div className="space-y-1">
+          <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Tahun Pelajaran</p>
+          <p className="text-2xl font-black text-gray-900">{year || settings.tahun_pelajaran?.active_year || '2024/2025'}</p>
+        </div>
+
+        {author && (
+          <div className="pt-6 border-t border-gray-100">
+            <p className="text-[10px] text-gray-400 uppercase font-bold mb-1">Disusun Oleh:</p>
+            <p className="text-base font-bold text-gray-800 uppercase">{author}</p>
+            {nip && <p className="text-xs font-medium text-gray-600">NIP. {nip}</p>}
+          </div>
+        )}
+
+        <div className="pt-2">
+          <p className="text-[8px] text-gray-300 font-mono uppercase tracking-tighter">
+            Generated by Si@Kad Intelligence System • {new Date().getFullYear()}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default DocumentCover;

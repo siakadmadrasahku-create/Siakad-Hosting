@@ -1,6 +1,6 @@
-# [Project name]
+# Si@Kad Madrasah
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+Sistem Informasi Akademik (SIAKAD) — a full-featured school management platform for Indonesian Islamic schools (Madrasah).
 
 ## Run & Operate
 

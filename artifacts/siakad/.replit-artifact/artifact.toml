@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Siakad Madrasah"
+description = "Sistem Informasi Akademik (SIAKAD) for Indonesian Islamic schools (Madrasah). A full-featured school management platform covering student records, curriculum, attendance, grading, finance (SPP), library, announcements, gallery, and admin dashboard — all configurable per school identity."
+version = "1.0.0"
+id = "artifacts/siakad"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19230
+
+[services.development]
+run = "pnpm --filter @workspace/siakad run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/siakad", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/siakad/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19230"
+BASE_PATH = "/"
